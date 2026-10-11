@@ -1,0 +1,9 @@
+FROM mongo:latest
+ 
+WORKDIR /data
+
+COPY ./keyfile/mongo-keyfile /data/mongo-keyfile
+
+RUN chown -R mongodb:mongodb /data/ && chmod 400 /data/mongo-keyfile
+
+ENTRYPOINT [ "docker-entrypoint.sh", "mongod", "--replSet", "rs0", "--auth", "--keyFile", "/data/mongo-keyfile", "--bind_ip_all" ]
